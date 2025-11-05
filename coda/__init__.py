@@ -1,6 +1,7 @@
 import logging
 import sqlite3
 import time
+from copy import deepcopy
 from enum import Enum
 from os import getenv
 from typing import Optional
@@ -50,6 +51,51 @@ def getenv_int(key: str, default: Optional[int] = None) -> int:
             raise ValueError(f"Missing required environment variable: {key}")
         return default
     return int(value)
+
+
+################
+# Shadow types #
+################
+
+
+class ConstDict:
+    """ConstDict is an immutable dictionary, returning deep copies of its values."""
+
+    def __init__(self, *args, **kwargs):
+        self._data = deepcopy(dict(*args, **kwargs))
+
+    def get(self, key, default=None):
+        return deepcopy(self._data.get(key, default))
+
+    def keys(self):
+        return deepcopy(self._data.keys())
+
+    def values(self):
+        return deepcopy(self._data.values())
+
+    def items(self):
+        return deepcopy(self._data.items())
+
+    def __getitem__(self, key):
+        return deepcopy(self._data[key])
+
+    def __setitem__(self, key, value):
+        raise TypeError("ConstDict is immutable")
+
+    def __delitem__(self, key):
+        raise TypeError("ConstDict is immutable")
+
+    def __len__(self):
+        return len(self._data)
+
+    def __iter__(self):
+        return iter(self._data)
+
+    def __contains__(self, item):
+        return item in self._data
+
+    def __hash__(self):
+        raise TypeError("ConstDict is unhashable")
 
 
 ###########
