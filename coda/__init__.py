@@ -24,16 +24,17 @@ def must_getenv(key: str) -> str:
     return value
 
 
-def getenv_bool(key: str) -> bool:
+def getenv_bool(key: str, default: Optional[bool] = None) -> bool:
     """
     getenv_bool gets an environment variable and coerces it to a boolean.
 
     :param key: Name of the environment variable
+    :param default: Default value to return if the environment variable is not found (defaults to False)
     :return: True iff the environment variable is found and set to "true", "1", or "yes" (case-insensitive)
     """
     value = getenv(key)
     if value is None:
-        return False
+        return default if default is not None else False
     return value.lower() in ["true", "1", "yes"]
 
 

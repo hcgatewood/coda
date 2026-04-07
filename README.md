@@ -19,6 +19,7 @@ import coda
 - Env variable loading
   - `must_getenv` get env variable or raise
   - `getenv_bool` get env variable and coerce to bool
+  - `getenv_int` get env variable and coerce to int
 - Immutability
   - `ConstDict` immutable dictionary returning mutable copies of its values
 - Logging
